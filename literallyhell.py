@@ -29,4 +29,4 @@ for i in range(num_iters):
 
 code = my_track.genCode()
 pyperclip.copy(code)
-print(my_track.genCode(), " copied to clipboard")
+print("copied to clipboard")
