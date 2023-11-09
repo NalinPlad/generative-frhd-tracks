@@ -16,9 +16,6 @@ my_track.insLine(orig_x, orig_y, orig_x - 100, orig_y, "p")
 num_iters = 10000
 
 for i in range(num_iters):
-    # Generate a staircase with each step having a length of 10 and a height of 15
-    # my_track.insLine(orig_x + (i * stair_length), orig_y + (i * stair_height), orig_x + ((i + 1) * stair_length), orig_y + (i * stair_height), "p")
-    # my_track.insLine(orig_x + ((i + 1) * stair_length), orig_y + (i * stair_height), orig_x + ((i + 1) * stair_length), orig_y + ((i + 1) * stair_height), "p")
 
     for x in range(3):
         my_track.insLine(orig_x + (i * stair_length) + int((random.random()-0.5)*10), orig_y + (i * stair_height),orig_x + ((i + 1) * stair_length), orig_y + ((i + 1) * stair_height) + int((random.random()-0.5)*20), "p")
