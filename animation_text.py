@@ -9,12 +9,6 @@ my_track = frhd.Track.Track()
 gap = 1000
 num_frames = 500
 
-def box(x, y, w, h):
-    my_track.insLine("p", x, y, x+w, y)
-    my_track.insLine("p", x+w, y, x+w, y+h)
-    my_track.insLine("p", x+w, y+h, x, y+h)
-    my_track.insLine("p", x, y+h, x, y,)
-
 # my_track.insLine("p",-50, 50, num_frames * gap, 50)
 # my_track.insAntiGrav(0,0)
 
@@ -27,16 +21,16 @@ for i in range(num_frames):
     my_track.insLine("p", i*gap-int(platform_width/2), 75, i*gap+int(platform_width/2), 75)
     
     ORIGIN_X = i*gap+1
-    ORIGIN_Y = -100
+    ORIGIN_Y = -50
     
-    text_pos= int(i/num_frames*len(message))
+    text_pos= int(i/num_frames*len(message))+1
     
     # draw text
     my_track.addText(ORIGIN_X+len(message)*20, ORIGIN_Y, message[0:text_pos])
     
     # draw cursor so it blinks
-    if math.sin(text_pos) > 0.5:
-        my_track.insLine("p", ORIGIN_X+len(message)*20 + text_pos*20, ORIGIN_Y +10, ORIGIN_X+len(message)*20 + text_pos*20, ORIGIN_Y-30)
+    # if math.sin(text_pos) > 0.5:
+    my_track.insLine("p", ORIGIN_X+len(message)*20 + text_pos*20, ORIGIN_Y +10, ORIGIN_X+len(message)*20 + text_pos*20 +25, ORIGIN_Y+10)
         # my_track.insLine("p", ORIGIN_X+len(message)*20, ORIGIN_Y, ORIGIN_X+len(message)*20, ORIGIN_Y+20)
 
 
