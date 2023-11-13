@@ -7,7 +7,7 @@ my_track = frhd.Track.Track()
 
 
 gap = 1000
-num_frames = 500
+num_frames = 1000
 
 
 # my_track.insLine("p",-50, 50, num_frames * gap, 50)
@@ -17,19 +17,39 @@ platform_width = 100
 
 
 
-def drawCube(x_off, y_off, camera_x, camera_y, camera_z):
+def drawCube(x_off, y_off, camera_x, camera_y, camera_z, rot_x=0, rot_y=0, rot_z=0):
 
     x_values = list(map(lambda x: x - camera_x, [-10,10,-10,10,-10,10,-10,10]))
     y_values = list(map(lambda x: x - camera_y,[10,10,-10,-10,10,10,-10,-10]))
     z_values = list(map(lambda x: x - camera_z,[40,40,40,40,60,60,60,60]))
+    
+    # apply rotation to the points
+    for i in range(len(x_values)):
+        x = x_values[i]
+        y = y_values[i]
+        z = z_values[i]
+        
+        # rotate around x axis
+        y = y * math.cos(rot_x) - z * math.sin(rot_x)
+        z = y * math.sin(rot_x) + z * math.cos(rot_x)
+        
+        # rotate around y axis
+        x = x * math.cos(rot_y) - z * math.sin(rot_y)
+        z = x * math.sin(rot_y) + z * math.cos(rot_y)
+        
+        # rotate around z axis
+        x = x * math.cos(rot_z) - y * math.sin(rot_z)
+        y = x * math.sin(rot_z) + y * math.cos(rot_z)
+        
+        x_values[i] = x
+        y_values[i] = y
+        z_values[i] = z
 
-    faces = [
-        # [0,1,3,4,0],
-        [4,0,2,6,4],
-        [4,5,7,6,4],
-        [3,7,5,1,3],
-        [0,1,3,2,0],
-        [2,3,7,6,2]
+    vertex_paths = [
+        [0,1,3,2,0,4,6,7,5,1],
+        [4,5],
+        [2,6],
+        [3,7]
         ]
 
 
@@ -48,15 +68,12 @@ def drawCube(x_off, y_off, camera_x, camera_y, camera_z):
         (x,y) = (int(x*100), int(y*100))
         projected_points.append([x,y])
 
-    for face in faces:
-        # print(face)
-        my_track.insLine("s", 
-                        projected_points[face[0]][0] + x_off, projected_points[face[0]][1] + y_off,
-                        projected_points[face[1]][0] + x_off, projected_points[face[1]][1] + y_off,
-                        projected_points[face[2]][0] + x_off, projected_points[face[2]][1] + y_off,
-                        projected_points[face[3]][0] + x_off, projected_points[face[3]][1] + y_off,
-                        projected_points[face[4]][0] + x_off, projected_points[face[4]][1] + y_off
-                        )
+    for vertex_path in vertex_paths:
+        path = []
+        for point in vertex_path:
+            print(point)
+            path.append([x_off + projected_points[point][0], y_off + projected_points[point][1]])
+        my_track.insLine("s", *path)
 
 
 message = "3D Cube Animation Test One"
@@ -71,7 +88,7 @@ for i in range(num_frames):
     
     anim = int(i/num_frames*100)
     # print(anim)
-    drawCube(ORIGIN_X, ORIGIN_Y, math.sin(anim/5)*20,math.cos(anim/5)*20,math.sin(anim/5 + math.pi*2)*20)
+    drawCube(ORIGIN_X, ORIGIN_Y, math.sin(anim/6)*20,math.cos(anim/5)*20,int(math.sin(anim/7 + math.pi*2)*20), math.sin(anim/5.5+ 5.23)/5, math.cos(anim/4 - 3.12)/5, math.sin(anim/5 + 32)/5)
     
     text_pos = int(i/num_frames*len(message) * 3)+1
     
